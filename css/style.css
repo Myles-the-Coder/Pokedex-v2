@@ -1,18 +1,17 @@
-@import url(./img/Pokeball_Background.jpg);
-
 * {
   box-sizing: border-box;
 }
 
 body {
-  background-image: url(./img/Pokeball_Background.jpg);
+  height: 300px;
+  width: 100vw;
+  background-image: url(../img/pokeball.jpg);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-clip: border-box;
   background-origin: padding-box;
   background-position: center center;
   background-size: cover;
-  height: 100vw;
 }
 
 body::before {
