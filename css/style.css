@@ -1,10 +1,13 @@
+@font-face {
+  font-family: 'Pokemon GB';
+  src: url(../font/PokemonGb-RAeo.ttf);
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  height: 300px;
-  width: 100vw;
   background-image: url(../img/pokeball.jpg);
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -12,6 +15,9 @@ body {
   background-origin: padding-box;
   background-position: center center;
   background-size: cover;
+  font-family: 'Pokemon GB';
+  font-size: 1.5rem;
+  color: #fff;
 }
 
 body::before {
