@@ -1,4 +1,3 @@
-
 let pokemonRepository = (function() {
   let pokemonList = [
     {
@@ -40,10 +39,37 @@ let pokemonRepository = (function() {
     return pokemonList.filter(pokemon => pokemon.name === name)
   }
 
+  function addListItem(pokemon) {
+    let {name} = pokemon
+    const pokemonContainer = document.querySelector('.pokemon-container')
+    const listItem = document.createElement('li')
+    const btn = document.createElement('button')
+    pokemonContainer.classList.add('pokemon-container')
+    btn.classList.add('btn')
+    btn.innerText = `${name}`
+    // btn.classList.add('')
+    listItem.appendChild(btn)
+    pokemonContainer.appendChild(listItem)
+
+    consoleLogPokemon(btn, pokemon)
+  }
+
+  //Add event to call showDetails
+  function consoleLogPokemon(target, pokemon) {
+    target.addEventListener('click', () => showDetails(pokemon))
+  }
+
+  //Log Pokemon name to the console
+  function showDetails(pokemon) {
+    console.log(pokemon.name);
+  }
+
   return {
     add,
     getAll,
-    filterPokemon
+    filterPokemon,
+    addListItem,
+    showDetails
   }
 })()
 
@@ -55,15 +81,6 @@ pokemonRepository.add({
 
 // Prints Pokemon name and height in the DOM
 pokemonRepository.getAll().forEach(pokemon => {
-	let { name, heightInMeters } = pokemon;
-  printPokemon(name, heightInMeters)
+  pokemonRepository.addListItem(pokemon)
 });
-
-function printPokemon(name, heightInMeters) {
-	document.write(
-		heightInMeters > 1
-			? ` </br> ${name}: height(${heightInMeters}) - Wow, that's big! </br>`
-			: ` </br> ${name}: height(${heightInMeters}) </br>`
-	);
-}
 
