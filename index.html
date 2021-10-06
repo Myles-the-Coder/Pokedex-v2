@@ -1,23 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="./img/pokeball.ico">
-  <link rel="stylesheet" href="./css/style.css">
-  <title>Pokédex</title>
-</head>
-<body>
-  <img class="pokedex-logo" src="https://th.bing.com/th/id/R.5409c5a012ff2dbe5a895c4f067dacdf?rik=eFLgLYCyZCvR2Q&riu=http%3a%2f%2fimg1.wikia.nocookie.net%2f__cb20130927133418%2fpokemon%2ffr%2fimages%2f1%2f1b%2fPokedex_logo.png&ehk=mhq2CI0CjFhlxc0%2bV9kx%2fQdUmcg9WcNgs6M5WTFmCUo%3d&risl=&pid=ImgRaw&r=0" alt="Pokedex Logo">
-  <div class="loading-icon"></div>
-  <div class="modal-container">
-    <div class="pokemon-modal"></div>
-  </div>
-  <ul class="pokemon-container scrollable"></ul>
-  </body>
-  <script src="./js/promise-polyfill.js"></script>
-  <script src="./js/fetch-polyfill.js"></script>
-  <script src="./js/script.js"></script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="shortcut icon" href="./img/pokeball.ico" />
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" href="./css/style.css" />
+
+		<title>Pokédex</title>
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-sm">
+			<form class="form-inline" id="search-form">
+				<div class="input-group">
+					<input
+						type="text"
+						class="form-control"
+						id="search-input"
+						placeholder="Search Pokémon"
+						aria-label="Search Pokemon"
+						aria-describedby="button-addon2"
+					/>
+					<button class="btn" type="button" id="button-addon2">
+						<img
+							src="https://img.icons8.com/ios-glyphs/30/000000/search--v1.png"
+						/>
+					</button>
+				</div>
+			</form>
+		</nav>
+		<img
+			class="pokedex-logo"
+			src="https://th.bing.com/th/id/R.5409c5a012ff2dbe5a895c4f067dacdf?rik=eFLgLYCyZCvR2Q&riu=http%3a%2f%2fimg1.wikia.nocookie.net%2f__cb20130927133418%2fpokemon%2ffr%2fimages%2f1%2f1b%2fPokedex_logo.png&ehk=mhq2CI0CjFhlxc0%2bV9kx%2fQdUmcg9WcNgs6M5WTFmCUo%3d&risl=&pid=ImgRaw&r=0"
+			alt="Pokedex Logo"
+		/>
+		<!-- <div class="loading-icon"></div> -->
+
+		<div class="modal fade" tabindex="-1" role="dialog" id="poke-modal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"></h5>
+					</div>
+					<div class="modal-body"></div>
+				</div>
+			</div>
+		</div>
+
+		<ul class="pokemon-container container w-75 scrollable list-group">
+			<div class="loading-icon"></div>
+		</ul>
+		<script src="./js/promise-polyfill.js"></script>
+		<script src="./js/fetch-polyfill.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.2/js/bootstrap.min.js"
+			integrity="sha512-HSNvqjhsAxRPvbSBEdXWlkR9uYmJtUvXEyfAvUzlA0uS5SyFZMZdczgz8oPWTz2NUEBaXkIYL4kdrBJkP66jYA=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<script src="./js/script.js"></script>
+	</body>
 </html>
