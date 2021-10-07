@@ -1,8 +1,7 @@
 let pokemonRepository = (function () {
 	let pokemonList = [];
-	let pokeballIcon;
 	const pokemonContainer = document.querySelector('.pokemon-container');
-	const loadingIcon = document.querySelector('.loading-icon');
+	const loadingIcon = document.querySelectorAll('.loading-icon');
 	const searchForm = document.querySelector('#search-form');
 	const searchInput = document.querySelector('#search-input');
 	const searchBtn = document.querySelector('#button-addon2');
@@ -40,6 +39,7 @@ let pokemonRepository = (function () {
 		btn.setAttribute('data-bs-target', '#poke-modal');
 		listItem.appendChild(btn);
 		pokemonContainer.appendChild(listItem);
+		hideLoadingIcon();
 		btn.addEventListener('click', () => showDetails(pokemon));
 	}
 
@@ -71,7 +71,7 @@ let pokemonRepository = (function () {
 			modalHeader.appendChild(closeModalBtn);
 			modalBody.appendChild(pokemonImg);
 			modalBody.appendChild(pokemonInfo);
-
+			hideLoadingIcon();
 			closeModalBtn.addEventListener('click', () => {
 				modalBody.innerHTML = '';
 			});
@@ -79,8 +79,8 @@ let pokemonRepository = (function () {
 	}
 
 	function displayTypesAndHeight(pokemon, el) {
+		const pokemonInfoArray = [];
 		if (pokemon.types.length === 2) {
-			const pokemonInfoArray = [];
 			pokemon.types.forEach(type => {
 				pokemonInfoArray.push(capitalize(type.type.name));
 				el.innerText = `
@@ -95,18 +95,10 @@ let pokemonRepository = (function () {
 		}
 	}
 
-	function showLoadingIcon() {
-		pokeballIcon = document.createElement('img');
-		pokeballIcon.classList.add('loading-icon');
-		pokeballIcon.src =
-			'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/029b8bd9-cb5a-41e4-9c7e-ee516face9bb/dayo3ow-7ac86c31-8b2b-4810-89f2-e6134caf1f2d.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvMDI5YjhiZDktY2I1YS00MWU0LTljN2UtZWU1MTZmYWNlOWJiXC9kYXlvM293LTdhYzg2YzMxLThiMmItNDgxMC04OWYyLWU2MTM0Y2FmMWYyZC5naWYifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.LJBxDkRocQStjZpmj9Injfv73mG2SQZ8X6HNdlP5WHw';
-		loadingIcon.appendChild(pokeballIcon);
-	}
-
 	function hideLoadingIcon() {
-		if (pokeballIcon) {
-			pokeballIcon.classList.add('hidden');
-		}
+		loadingIcon.forEach(icon => {
+			icon.classList.add('hidden');
+		});
 	}
 
 	function handleError(err) {
@@ -116,7 +108,6 @@ let pokemonRepository = (function () {
 
 	//API functions
 	function loadList() {
-		showLoadingIcon();
 		return fetch(pokeApi)
 			.then(res => res.json())
 			.then(data => {
@@ -127,7 +118,6 @@ let pokemonRepository = (function () {
 					};
 					add(pokemon);
 				});
-				hideLoadingIcon();
 			})
 			.catch(err => handleError(err));
 	}
@@ -143,35 +133,29 @@ let pokemonRepository = (function () {
 			})
 			.catch(err => handleError(err));
 	}
-
-	function filterPokemon(e) {
-		e.preventDefault();
+  
+	function filterPokemonList(e) {
+    e.preventDefault();
+    let pokeList = document.querySelectorAll('.group-list-item')
 		let searchTerm = searchInput.value.toLowerCase();
-
 		if (searchTerm) {
-			pokemonList.filter(pokemon => {
-				if (pokemon.name === searchTerm) {
-					pokemonContainer.innerHTML = '';
-					addListItem(pokemon);
+			pokeList.forEach(pokemon => {
+				if (pokemon.innerText.toLowerCase().indexOf(searchTerm) > -1) {
+					pokemon.classList.remove('hidden')
 				} else {
-					return;
+					pokemon.classList.add('hidden')
 				}
 			});
 		}
+
+    if(searchTerm === '') {
+      pokeList.forEach(pokemon => pokemon.classList.remove('hidden'))
+    }
 	}
 
-	function restoreList(e) {
-		if (e.target.value === '') {
-			pokemonContainer.innerHTML = '';
-			pokemonList.forEach(pokemon => {
-				addListItem(pokemon);
-			});
-		}
-	}
-
-	searchForm.addEventListener('submit', e => filterPokemon(e));
-	searchBtn.addEventListener('click', e => filterPokemon(e));
-	searchInput.addEventListener('input', e => restoreList(e));
+	searchForm.addEventListener('submit', e => filterPokemonList(e));
+	searchBtn.addEventListener('click', e => filterPokemonList(e));
+	searchInput.addEventListener('input', e => filterPokemonList(e));
 	modal.addEventListener('hidden.bs.modal', () => (modalBody.innerHTML = ''));
 
 	return {
