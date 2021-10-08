@@ -11,34 +11,33 @@
 			integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF"
 			crossorigin="anonymous"
 		/>
-		<link rel="stylesheet" href="./dist/minify-style.css" />
+		<link rel="stylesheet" href="./css/style.css" />
 		<title>Pokédex</title>
 	</head>
 	<body>
-		<nav class="navbar navbar-expand-sm">
+
+    <div class="container">
+      <button class="btn .app-info-btn" data-bs-toggle="modal" data-bs-target="#app-info-modal">App Info</button>
+      <img
+        class="pokedex-logo"
+        src="https://th.bing.com/th/id/R.5409c5a012ff2dbe5a895c4f067dacdf?rik=eFLgLYCyZCvR2Q&riu=http%3a%2f%2fimg1.wikia.nocookie.net%2f__cb20130927133418%2fpokemon%2ffr%2fimages%2f1%2f1b%2fPokedex_logo.png&ehk=mhq2CI0CjFhlxc0%2bV9kx%2fQdUmcg9WcNgs6M5WTFmCUo%3d&risl=&pid=ImgRaw&r=0"
+        alt="Pokedex Logo"
+      />
+      <button class="btn contact-btn" data-bs-toggle="modal" data-bs-target="#contact-modal">Contact</button>
+    </div>
+
+    <nav class="navbar navbar-expand-sm">
 			<form class="form-inline" id="search-form">
-				<div class="input-group">
 					<input
 						type="text"
 						class="form-control"
 						id="search-input"
-						placeholder="Search Pokémon"
+						placeholder="Search Pokémon..."
 						aria-label="Search Pokemon"
 						aria-describedby="button-addon2"
 					/>
-					<button class="btn" type="button" id="button-addon2">
-						<img
-							src="https://img.icons8.com/ios-glyphs/30/000000/search--v1.png"
-						/>
-					</button>
-				</div>
 			</form>
 		</nav>
-		<img
-			class="pokedex-logo"
-			src="https://th.bing.com/th/id/R.5409c5a012ff2dbe5a895c4f067dacdf?rik=eFLgLYCyZCvR2Q&riu=http%3a%2f%2fimg1.wikia.nocookie.net%2f__cb20130927133418%2fpokemon%2ffr%2fimages%2f1%2f1b%2fPokedex_logo.png&ehk=mhq2CI0CjFhlxc0%2bV9kx%2fQdUmcg9WcNgs6M5WTFmCUo%3d&risl=&pid=ImgRaw&r=0"
-			alt="Pokedex Logo"
-		/>
 		<div class="modal fade" tabindex="-1" role="dialog" id="poke-modal">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -52,6 +51,66 @@
 			</div>
 		</div>
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="app-info-modal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">App Info</h5>
+            <button>X</button>
+					</div>
+					<div class="modal-body">
+            <p>View code on <a href="https://github.com/Myles-the-Coder/Pokedex-v2.git" target="_blank">GitHub</a></p>
+            <h2>Technologies:</h2>
+            <ul>
+              <li>HTML, CSS, Bootstrap</li>
+              <li>JavaScript</li>
+              <li>RESTful API - PokeApi</li>
+            </ul>
+            <hr>
+            <h2>Functionality</h2>
+            <ul>
+              <li>Searching/Filtering</li>
+              <li>Dynamic HTML markup from API data</li>
+              <li>Bootstrap components - navbar, modals, form</li>
+              <li>Contact form validation</li>
+            </ul>
+          </div>
+				</div>
+			</div>
+		</div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="contact-modal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Like what you see?</h5>
+					</div>
+					<div class="modal-body">
+            <p>Thank you for using my app!</p>
+            <form> 
+              <div class="form-group">
+                <label for="name">Name: </label>
+                <input type="text" class="form-control" placeholder="Ash Ketchem" required>
+                </div>
+                <br>
+                <div class="form-group">
+                  <label for="email">Email: </label>
+                <input type="email" class="form-control" placeholder="GottaCatchEmAll@gmail.com" required>
+                </div>
+                <br>
+                <div class="form-group">
+                  <label for="message">Message: </label>
+                  <textarea name="message" id="message" cols="30" rows="10" placeholder="I want to be the very best, like no one ever was!"></textarea>
+                </div>
+                <button class="btn" type="submit">Submit</button>
+              </form>
+            </div>
+        </div>
+			</div>
+		</div>
+
+
+
 		<ul class="pokemon-container container w-75 scrollable list-group">
 			<div class="loading-icon hidden"><img src="https://th.bing.com/th/id/R.620c12a93d6a4209562d158f7ec5a5ae?rik=h8xaS63RYvxt1w&riu=http%3a%2f%2f38.media.tumblr.com%2f9656b9837470ff5cce3bd2ecf7d43cbc%2ftumblr_mw9lr1FUNx1scncwdo1_500.gif&ehk=NRKbgjfg910rgB8GoAGSVXKv30%2f1w32JRz134OSWx50%3d&risl=&pid=ImgRaw&r=0" alt="Loading icon"></div>
 		</ul>
@@ -63,6 +122,6 @@
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"
 		></script>
-		<script src="./dist/minify-script.js"></script>
+		<script src="./js/script.js"></script>
 	</body>
 </html>
