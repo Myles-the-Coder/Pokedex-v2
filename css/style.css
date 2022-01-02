@@ -49,6 +49,7 @@ body {
 	font-family: 'Pokemon GB';
 	font-size: 1.5rem;
 	color: #fff;
+  width: 100vw;
 	height: 100vh;
 	overflow: hidden;
 }
@@ -98,10 +99,6 @@ body::before {
   outline: none;
   box-shadow:none;
 }
-
-.form-control:hover {
-  cursor: pointer;
-}
 /* ///////////////////////////////////////////////////////// */
 /* Utility */
 .hidden {
@@ -127,14 +124,14 @@ body::before {
 }
 
 .pokemon-container {
+  width: 75%;
   position: relative;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 	background-color: rgba(102, 106, 109, 0.9);
 	z-index: 1;
-	padding: 1rem;
+	padding: 1.5rem;
 	margin: 20px;
-	height: 500px;
 	border-radius: 0.8rem;
 	box-shadow: --box-shadow;
 	list-style-type: none;
@@ -225,10 +222,6 @@ justify-content: center;
 }
 
 @media screen and (max-width: 500px) {
-  .pokemon-container {
-    grid-template-columns: 1fr;
-  }
-
   .modal-body p {
     font-size: 1.2rem;
   }

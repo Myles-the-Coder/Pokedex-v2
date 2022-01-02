@@ -5,7 +5,7 @@ let pokemonRepository = (function () {
 	const searchInput = document.querySelector('#search-input');
 	const modal = document.querySelector('#poke-modal');
 	const modalBody = document.querySelector('.modal-body');
-  let pokeApi = 'https://pokeapi.co/api/v2/pokemon/?limit=151';
+	let pokeApi = 'https://pokeapi.co/api/v2/pokemon/?limit=151';
 
 	function add(pokemon) {
 		if (typeof pokemon === 'object') {
@@ -13,17 +13,11 @@ let pokemonRepository = (function () {
 		}
 	}
 
-	function getAll() {
-		return pokemonList;
-	}
+	const getAll = () => pokemonList
 
-	function filterPokemon(name) {
-		return pokemonList.filter(pokemon => pokemon.name === name);
-	}
+	const filterPokemon = name => pokemonList.filter(pokemon => pokemon.name === name);
 
-	function capitalize(word) {
-		return word.toUpperCase().slice(0, 1) + word.slice(1);
-	}
+	const capitalize = word => word.toUpperCase().slice(0, 1) + word.slice(1);
 
 	function addListItem(pokemon) {
 		let { name } = pokemon;
@@ -70,7 +64,7 @@ let pokemonRepository = (function () {
 			modalBody.appendChild(pokemonImg);
 			modalBody.appendChild(pokemonInfo);
 			hideLoadingIcon();
-			closeModalBtn.addEventListener('click', () => modalBody.innerHTML = '');
+			closeModalBtn.addEventListener('click', () => (modalBody.innerHTML = ''));
 		});
 	}
 
@@ -91,66 +85,61 @@ let pokemonRepository = (function () {
 		}
 	}
 
-	function hideLoadingIcon() {
-		loadingIcon.forEach(icon => {
-			icon.classList.add('hidden');
-		});
-	}
-
+	const hideLoadingIcon = () => loadingIcon.forEach(icon => icon.classList.add('hidden'));
+  
 	function handleError(err) {
 		hideLoadingIcon();
 		console.error(err);
 	}
 
 	//API functions
-	function loadList() {
-		return fetch(pokeApi)
-			.then(res => res.json())
-			.then(data => {
-				data.results.forEach(item => {
-					let pokemon = {
-						name: item.name,
-						detailsUrl: item.url,
-					};
-					add(pokemon);
-				});
-			})
-			.catch(err => handleError(err));
+	async function loadList() {
+		try {
+			const res = await fetch(pokeApi);
+			const data = await res.json();
+			data.results.forEach(item => {
+				let pokemon = {
+					name: item.name,
+					detailsUrl: item.url,
+				};
+				add(pokemon);
+			});
+		} catch (err) {
+			return handleError(err);
+		}
 	}
 
-	function loadDetails(item) {
+	async function loadDetails(item) {
 		let url = item.detailsUrl;
-		return fetch(url)
-			.then(res => res.json())
-			.then(data => {
-				item.imageUrl = data.sprites.front_default;
-				item.height = data.height;
-				item.types = data.types;
-			})
-			.catch(err => handleError(err));
+		try {
+			const res = await fetch(url);
+			const data = await res.json();
+			item.imageUrl = data.sprites.front_default;
+			item.height = data.height;
+			item.types = data.types;
+		} catch (err) {
+			return handleError(err);
+		}
 	}
-  
+
 	function filterPokemonList(e) {
-    e.preventDefault();
-    let pokeList = document.querySelectorAll('.group-list-item')
+		e.preventDefault();
+		let pokeList = document.querySelectorAll('.group-list-item');
 		let searchTerm = searchInput.value.toLowerCase();
 		if (searchTerm) {
 			pokeList.forEach(pokemon => {
-				if (pokemon.innerText.toLowerCase().indexOf(searchTerm) > -1) {
-					pokemon.classList.remove('hidden')
-				} else {
-					pokemon.classList.add('hidden')
-				}
+				pokemon.innerText.toLowerCase().indexOf(searchTerm) > -1
+					? pokemon.classList.remove('hidden')
+					: pokemon.classList.add('hidden');
 			});
 		}
 
-    if(searchTerm === '') {
-      pokeList.forEach(pokemon => pokemon.classList.remove('hidden'))
-    }
+		searchTerm === '' &&
+			pokeList.forEach(pokemon => pokemon.classList.remove('hidden'));
 	}
 
 	searchInput.addEventListener('input', e => filterPokemonList(e));
-	modal.addEventListener('hidden.bs.modal', () => (modalBody.innerHTML = ''));
+	modal.addEventListener('hidden.bs.modal', () => modalBody.innerHTML = '');
 
 	return {
 		getAll,
@@ -162,8 +151,10 @@ let pokemonRepository = (function () {
 	};
 })();
 
-pokemonRepository.loadList().then(() => {
-	pokemonRepository.getAll().forEach(pokemon => {
-		pokemonRepository.addListItem(pokemon);
-	});
-});
+pokemonRepository
+	.loadList()
+	.then(() =>
+		pokemonRepository
+			.getAll()
+			.forEach(pokemon => pokemonRepository.addListItem(pokemon))
+	);
