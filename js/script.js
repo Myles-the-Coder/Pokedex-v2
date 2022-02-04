@@ -1,4 +1,4 @@
-let pokemonRepository = (function () {
+let pokemonRepository = (() => {
 	let pokemonList = [];
 	const pokemonContainer = document.querySelector('.pokemon-container');
 	const loadingIcon = document.querySelectorAll('.loading-icon');
