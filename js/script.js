@@ -55,13 +55,12 @@ let pokemonRepository = (function () {
 			const modalHeader = document.querySelector('.modal-header');
 			const modalTitle = document.querySelector('.modal-title');
 			const modalBody = document.querySelector('.modal-body');
-
 			const pokemonImg = document.createElement('img');
 			const pokemonInfo = document.createElement('p');
 			const pokemonName = document.createElement('h2');
 			const closeModalBtn = document.createElement('button');
-
 			const poke_types = types.map(type => type.type.name);
+      console.log(poke_types)
 			const type = capitalize(
 				main_types.find(type => poke_types.indexOf(type) > -1)
 			);
@@ -92,8 +91,9 @@ let pokemonRepository = (function () {
 
 	function displayTypesAndHeight(pokemon, el) {
 		const pokemonInfoArray = [];
-		if (pokemon.types.length === 2) {
-			pokemon.types.forEach(type => {
+    const {types} = pokemon
+		if (types.length === 2) {
+			types.forEach(type => {
 				pokemonInfoArray.push(capitalize(type.type.name));
 				el.innerText = `
           Types: ${pokemonInfoArray} 
@@ -102,7 +102,7 @@ let pokemonRepository = (function () {
 			});
 		} else {
 			el.innerText = `
-        Type: ${capitalize(pokemon.types[0].type.name)} 
+        Type: ${capitalize(types[0].type.name)} 
         Height: ${pokemon.height}m`;
 		}
 	}
@@ -122,9 +122,10 @@ let pokemonRepository = (function () {
 			const data = await res.json();
 			console.log(data);
 			data.results.forEach(item => {
+        const {name, url} = item
 				let pokemon = {
-					name: item.name,
-					detailsUrl: item.url,
+					name,
+					detailsUrl: url,
 				};
 				add(pokemon);
 			});
@@ -138,9 +139,11 @@ let pokemonRepository = (function () {
 		try {
 			const res = await fetch(url);
 			const data = await res.json();
-			item.imageUrl = data.sprites.front_default;
-			item.height = data.height;
-			item.types = data.types;
+      const {sprites, height, types} = data
+
+			item.imageUrl = sprites.front_default;
+			item.height = height;
+			item.types = types;
 		} catch (err) {
 			return handleError(err);
 		}
