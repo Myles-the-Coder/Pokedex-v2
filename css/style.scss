@@ -5,6 +5,12 @@
 
 $box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 $white-background: whitesmoke;
+$black-background: #000;
+
+@mixin trackRadius() {
+  border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
 
 * {
 	box-sizing: border-box;
@@ -17,15 +23,13 @@ $white-background: whitesmoke;
 /* Track */
 ::-webkit-scrollbar-track {
 	background: $white-background;
-	border-top-right-radius: 5px;
-	border-bottom-right-radius: 5px;
+  @include trackRadius()
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-	background: #000;
-	border-top-right-radius: 5px;
-	border-bottom-right-radius: 5px;
+	background: $black-background;
+	@include trackRadius()
 }
 
 /* Handle on hover */
@@ -38,27 +42,21 @@ body {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	background-image: url(../img/pokeball.jpg);
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-clip: border-box;
-	background-origin: padding-box;
-	background-position: center center;
-	background-size: cover;
+	background: url(../img/pokeball.jpg) no-repeat fixed border-box padding-box center center cover ;
 	font-family: 'Pokemon GB';
 	font-size: 1.5rem;
 	color: #fff;
 	width: 100vw;
 	height: 100vh;
 	overflow: hidden;
-
+  
 	&::before {
 		content: '';
 		position: absolute;
 		inset: 0;
 		width: 100%;
 		height: 100%;
-		background-color: black;
+		background-color: $black-background;
 		opacity: 0.2;
 	}
 }
@@ -183,7 +181,7 @@ body {
 
 .modal-dialog {
 	background-color: $white-background;
-	color: #000;
+	color: $black-background;
 	border-radius: 0.8rem;
 	text-align: center;
 	font-size: 1rem;

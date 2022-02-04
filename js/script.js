@@ -6,27 +6,26 @@ let pokemonRepository = (function () {
 	const modal = document.querySelector('#poke-modal');
 	const modalBody = document.querySelector('.modal-body');
 	let pokeApi = 'https://pokeapi.co/api/v2/pokemon/?limit=151';
-  const colors = {
-    fire: "#FDDFDF",
-    grass: "#DEFDE0",
-    electric: "#FCF7DE",
-    water: "#DEF3FD",
-    ground: "#f4e7da",
-    rock: "#d5d5d4",
-    fairy: "#fceaff",
-    poison: "#98d7a5",
-    bug: "#f8d5a3",
-    dragon: "#97b3e6",
-    psychic: "#eaeda1",
-    flying: "#778899",
-    fighting: "#E6E0D4",
-    normal: "#F5F5F5",
-  };
-  const main_types = Object.keys(colors);
-
-	const add = pokemon => {
-		if (typeof pokemon === 'object') return pokemonList.push(pokemon);
+	const colors = {
+		fire: '#FDDFDF',
+		grass: '#DEFDE0',
+		electric: '#FCF7DE',
+		water: '#DEF3FD',
+		ground: '#f4e7da',
+		rock: '#d5d5d4',
+		fairy: '#fceaff',
+		poison: '#98d7a5',
+		bug: '#f8d5a3',
+		dragon: '#97b3e6',
+		psychic: '#eaeda1',
+		flying: '#778899',
+		fighting: '#E6E0D4',
+		normal: '#F5F5F5',
 	};
+	const main_types = Object.keys(colors);
+
+	const add = pokemon =>
+		typeof pokemon === 'object' && pokemonList.push(pokemon);
 
 	const getAll = () => pokemonList;
 	const filterPokemon = name =>
@@ -52,7 +51,7 @@ let pokemonRepository = (function () {
 	//Display Pokemon Info in modal
 	function showDetails(pokemon) {
 		loadDetails(pokemon).then(() => {
-      const {name, imageUrl, types} = pokemon
+			const { name, imageUrl, types } = pokemon;
 			const modalHeader = document.querySelector('.modal-header');
 			const modalTitle = document.querySelector('.modal-title');
 			const modalBody = document.querySelector('.modal-body');
@@ -62,11 +61,13 @@ let pokemonRepository = (function () {
 			const pokemonName = document.createElement('h2');
 			const closeModalBtn = document.createElement('button');
 
-      const poke_types = types.map(type => type.type.name);
-      const type = capitalize(main_types.find(type => poke_types.indexOf(type) > -1))
-      const color = colors[type[0].toLowerCase() + type.slice(1)];
+			const poke_types = types.map(type => type.type.name);
+			const type = capitalize(
+				main_types.find(type => poke_types.indexOf(type) > -1)
+			);
+			const color = colors[type[0].toLowerCase() + type.slice(1)];
 
-      modalBody.style.backgroundColor = color
+			modalBody.style.backgroundColor = color;
 
 			pokemonImg.src = `${imageUrl}`;
 			modalTitle.innerText = `${capitalize(name)}`;
@@ -109,17 +110,17 @@ let pokemonRepository = (function () {
 	const hideLoadingIcon = () =>
 		loadingIcon.forEach(icon => icon.classList.add('hidden'));
 
-	function handleError(err) {
+	const handleError = err => {
 		hideLoadingIcon();
 		console.error(err);
-	}
+	};
 
 	//API functions
 	async function loadList() {
 		try {
 			const res = await fetch(pokeApi);
 			const data = await res.json();
-      console.log(data)
+			console.log(data);
 			data.results.forEach(item => {
 				let pokemon = {
 					name: item.name,
