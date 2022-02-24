@@ -1,5 +1,8 @@
 # Pokedex
+
+<div align='center'>
 ![Pokedex_logo](https://user-images.githubusercontent.com/76969330/155584554-546e55d4-f379-4f7e-9b61-316133fa891c.png)
+</div>
 
 Pokedex is a front-end JavaScript application built with HTML, SCSS, and vanilla JavaScript. The application fetches data from PokéAPI, a third party Pokemon API, and renders this data in the browser. Users are able to view a list of Pokemon built with CSS Grid and filter Pokemon by name. 
 
