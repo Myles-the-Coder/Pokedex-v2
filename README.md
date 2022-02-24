@@ -12,7 +12,7 @@ Initial 1.0 Version Duration: September 2021 - October 2022
 
 ## 🧐About
 
-This project was built for the purpose of gaining more expiernce with fetching API data and styling with CSS.
+This project was built for the purpose of gaining more experience with fetching API data and styling with CSS.
 
 ## 💡Features
 
