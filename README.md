@@ -32,27 +32,29 @@ These instructions will help you to setup your own copy of Pokedex on your local
 ## 🧰Installation
 
 1. Clone this repo
-2. Install all the dependencies listed above
-3. Tweak code depending on local settings
-4. Run ```npm start``` in your terminal to start local server
+4. Open project in browser
 
 ## 📝Todo
 
+- Improve app stucture
+- Integrate more API data
 
 ## 📈Future Plans
 
+- Render more pokemon using infinite scrolling
+- Improve app performance
 
 ## 🎈Usage
 
-Pokedex, like other applications such as WhatsApp, allows for communication between friends and family across the globe.
+Pokedex is a perfect example of fetching third-party API data and using said data for user functionality.
 
 ## ✍️Authors
 @Myles-the-Coder - Initial Work
 
 ## 🧬Resources
-
-- MDN Web Docs
-- Sass Docs
+- PokéAPI docs
+- MDN Web docs
+- Sass docs
 
 ## 🎉Acknowledgement
 CareerFoundry
