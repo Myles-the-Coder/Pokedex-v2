@@ -1,6 +1,6 @@
-# Pokedex
-
 <div align='center'>
+
+# Pokedex
 
 ![Pokedex_logo](https://user-images.githubusercontent.com/76969330/155584554-546e55d4-f379-4f7e-9b61-316133fa891c.png)
 
