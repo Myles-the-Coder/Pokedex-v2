@@ -46,8 +46,8 @@ let pokemonRepository = (() => {
 	}
 
 	//Display Pokemon Info in modal
-	function showDetails(pokemon) {
-		loadDetails(pokemon).then(() => {
+	const showDetails = async (pokemon) => {
+		await loadDetails(pokemon).then(() => {
 			const { name, imageUrl, types } = pokemon;
 			const modalHeader = document.querySelector('.modal-header');
 			const modalTitle = document.querySelector('.modal-title');
@@ -57,8 +57,7 @@ let pokemonRepository = (() => {
 			const pokemonName = document.createElement('h2');
 			const closeModalBtn = document.createElement('button');
 			const poke_types = types.map(type => type.type.name);
-			const type =
-				main_types.find(type => poke_types.indexOf(type) > -1)
+			const type = main_types.find(type => poke_types.includes(type));
 			const color = colors[type];
 
 			modalBody.style.backgroundColor = color;
@@ -86,14 +85,17 @@ let pokemonRepository = (() => {
 
 	const displayPokemonInfo = (pokemon, el) => {
 		const { types, height, weight } = pokemon;
-			const typesArray = types.map(type => capitalize(type.type.name));
-			el.innerText = types.length > 1 ? `
+		const typesArray = types.map(type => capitalize(type.type.name));
+		el.innerText =
+			types.length > 1
+				? `
         Types: ${typesArray} 
         Height: ${height}m
         Weight: ${weight}
-        ` : `
+        `
+				: `
         Type: ${capitalize(types[0].type.name)} 
-        Height: ${height}m`
+        Height: ${height}m`;
 	};
 
 	const hideLoadingIcon = () =>
@@ -105,16 +107,13 @@ let pokemonRepository = (() => {
 	};
 
 	//API functions
-	async function loadList() {
+	const loadList = async () => {
 		try {
 			const res = await fetch(pokeApi);
 			const { results } = await res.json();
 			results.forEach(item => {
 				const { name, url } = item;
-				let pokemon = {
-					name,
-					detailsUrl: url,
-				};
+				let pokemon = { name, url };
 				add(pokemon);
 			});
 		} catch (err) {
@@ -122,8 +121,8 @@ let pokemonRepository = (() => {
 		}
 	}
 
-	async function loadDetails(item) {
-		let url = item.detailsUrl;
+	const loadDetails = async (item) => {
+		let url = item.url;
 		try {
 			const res = await fetch(url);
 			const data = await res.json();
@@ -142,18 +141,16 @@ let pokemonRepository = (() => {
 		let pokeList = document.querySelectorAll('.group-list-item');
 		let searchTerm = searchInput.value.toLowerCase();
 		pokeList.forEach(pokemon => {
-      console.log(pokemon)
-			if (searchTerm !== '') {
-				pokemon.innerText.toLowerCase().indexOf(searchTerm) > -1
-					? pokemon.classList.remove('hidden')
-					: pokemon.classList.add('hidden');
-			} else {
-				pokemon.classList.remove('hidden');
-			}
+			pokemon.innerText.toLowerCase().includes(searchTerm.toLowerCase())
+				? pokemon.classList.remove('hidden')
+				: pokemon.classList.add('hidden');
 		});
 	};
 
-	searchInput.addEventListener('input', e => filterPokemonList(e));
+	searchInput.addEventListener('keyup', e => {
+		clearTimeout(setTimeout(filterPokemonList(e), 500));
+	});
+
 	modal.addEventListener('hidden.bs.modal', () => (modalBody.innerHTML = ''));
 
 	return {

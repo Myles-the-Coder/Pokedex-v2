@@ -7,7 +7,6 @@ $box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 $white-background: whitesmoke;
 $black-background: #000;
 
-
 * {
 	box-sizing: border-box;
 }
@@ -20,12 +19,12 @@ $black-background: #000;
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-thumb {
 	background: $white-background;
-  border-top-right-radius: 5px;
+	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb {
 	background: #555;
 }
 
@@ -34,14 +33,17 @@ body {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	background: url(../img/pokeball.jpg) no-repeat fixed border-box padding-box center center cover ;
+	background-image: url('../img/Pokeball_Background.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 	font-family: 'Pokemon GB';
 	font-size: 1.5rem;
 	color: #fff;
 	width: 100vw;
 	height: 100vh;
 	overflow: hidden;
-  
+
 	&::before {
 		content: '';
 		position: absolute;
@@ -49,7 +51,7 @@ body {
 		width: 100%;
 		height: 100%;
 		background-color: $black-background;
-		opacity: 0.2;
+		opacity: 0.1;
 	}
 }
 
@@ -110,10 +112,10 @@ body {
 }
 
 .pokemon-container {
-	width: 80%;
+	width: 85%;
 	position: relative;
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 	background-color: rgba(102, 106, 109, 0.9);
 	z-index: 1;
 	padding: 1.5rem;
@@ -154,11 +156,11 @@ body {
 }
 
 .pokemon-sprite-lg {
-	width: 350px;
-  margin: 1.5rem;
-  padding: 0;
-  background-color: $white-background;
-  border-radius: 50%;
+	width: 300px;
+	margin: 1rem;
+	padding: 0;
+	background-color: $white-background;
+	border-radius: 50%;
 }
 
 .modal-header {
@@ -179,8 +181,10 @@ body {
 	font-size: 1rem;
 }
 
-.modal-body p {
-	font-size: 1.5rem;
+.modal-body {
+	p {
+		font-size: 1.5rem;
+	}
 }
 /* /////////////////////////////////////////////////////// */
 
@@ -196,7 +200,7 @@ body {
 	transition: transform 0.2s ease;
 
 	&:hover,
-  &:active {
+	&:active {
 		transform: scale(1.05);
 	}
 
@@ -220,14 +224,14 @@ body {
 	}
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width:1000px) {
 	.container {
-    img {
-      width: 200px;
-    }
+		img {
+			width: 200px;
+		}
 
-    button {
-      font-size: .8rem;
-    }
-  }
+		button {
+			font-size: 0.8rem;
+		}
+	}
 }
