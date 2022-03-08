@@ -28,18 +28,15 @@ let pokemonRepository = (() => {
 		typeof pokemon === 'object' && pokemonList.push(pokemon);
 
 	const getAll = () => pokemonList;
-	const filterPokemon = name =>
-		pokemonList.filter(pokemon => pokemon.name === name);
 	const capitalize = word => word.toUpperCase().slice(0, 1) + word.slice(1);
 
 	function addListItem(pokemon) {
 		let { name } = pokemon;
-		let capitalizedName = capitalize(name);
 		const listItem = document.createElement('li');
 		listItem.classList.add('group-list-item');
 		const btn = document.createElement('button');
 		btn.classList.add('btn');
-		btn.innerText = `${capitalizedName}`;
+		btn.innerText = `${capitalize(name)}`;
 		btn.setAttribute('data-bs-toggle', 'modal');
 		btn.setAttribute('data-bs-target', '#poke-modal');
 		listItem.appendChild(btn);
@@ -60,11 +57,9 @@ let pokemonRepository = (() => {
 			const pokemonName = document.createElement('h2');
 			const closeModalBtn = document.createElement('button');
 			const poke_types = types.map(type => type.type.name);
-      console.log(poke_types)
-			const type = capitalize(
+			const type =
 				main_types.find(type => poke_types.indexOf(type) > -1)
-			);
-			const color = colors[type[0].toLowerCase() + type.slice(1)];
+			const color = colors[type];
 
 			modalBody.style.backgroundColor = color;
 
@@ -73,7 +68,7 @@ let pokemonRepository = (() => {
 			closeModalBtn.innerText = 'X';
 			closeModalBtn.setAttribute('data-bs-dismiss', 'modal');
 
-			displayTypesAndHeight(pokemon, pokemonInfo);
+			displayPokemonInfo(pokemon, pokemonInfo);
 
 			pokemonName.classList.add('pokemon-name');
 			pokemonImg.classList.add('pokemon-sprite-lg');
@@ -89,23 +84,17 @@ let pokemonRepository = (() => {
 		});
 	}
 
-	function displayTypesAndHeight(pokemon, el) {
-		const pokemonInfoArray = [];
-    const {types} = pokemon
-		if (types.length === 2) {
-			types.forEach(type => {
-				pokemonInfoArray.push(capitalize(type.type.name));
-				el.innerText = `
-          Types: ${pokemonInfoArray} 
-          Height: ${pokemon.height}m
-          `;
-			});
-		} else {
-			el.innerText = `
+	const displayPokemonInfo = (pokemon, el) => {
+		const { types, height, weight } = pokemon;
+			const typesArray = types.map(type => capitalize(type.type.name));
+			el.innerText = types.length > 1 ? `
+        Types: ${typesArray} 
+        Height: ${height}m
+        Weight: ${weight}
+        ` : `
         Type: ${capitalize(types[0].type.name)} 
-        Height: ${pokemon.height}m`;
-		}
-	}
+        Height: ${height}m`
+	};
 
 	const hideLoadingIcon = () =>
 		loadingIcon.forEach(icon => icon.classList.add('hidden'));
@@ -119,10 +108,9 @@ let pokemonRepository = (() => {
 	async function loadList() {
 		try {
 			const res = await fetch(pokeApi);
-			const data = await res.json();
-			console.log(data);
-			data.results.forEach(item => {
-        const {name, url} = item
+			const { results } = await res.json();
+			results.forEach(item => {
+				const { name, url } = item;
 				let pokemon = {
 					name,
 					detailsUrl: url,
@@ -130,7 +118,7 @@ let pokemonRepository = (() => {
 				add(pokemon);
 			});
 		} catch (err) {
-			return handleError(err);
+			handleError(err);
 		}
 	}
 
@@ -139,13 +127,13 @@ let pokemonRepository = (() => {
 		try {
 			const res = await fetch(url);
 			const data = await res.json();
-      const {sprites, height, types} = data
-
+			const { sprites, height, weight, types } = data;
 			item.imageUrl = sprites.front_default;
 			item.height = height;
 			item.types = types;
+			item.weight = weight;
 		} catch (err) {
-			return handleError(err);
+			handleError(err);
 		}
 	}
 
@@ -153,13 +141,16 @@ let pokemonRepository = (() => {
 		e.preventDefault();
 		let pokeList = document.querySelectorAll('.group-list-item');
 		let searchTerm = searchInput.value.toLowerCase();
-		searchTerm !== ''
-			? pokeList.forEach(pokemon => {
-					pokemon.innerText.toLowerCase().indexOf(searchTerm) > -1
-						? pokemon.classList.remove('hidden')
-						: pokemon.classList.add('hidden');
-			  })
-			: pokeList.forEach(pokemon => pokemon.classList.remove('hidden'));
+		pokeList.forEach(pokemon => {
+      console.log(pokemon)
+			if (searchTerm !== '') {
+				pokemon.innerText.toLowerCase().indexOf(searchTerm) > -1
+					? pokemon.classList.remove('hidden')
+					: pokemon.classList.add('hidden');
+			} else {
+				pokemon.classList.remove('hidden');
+			}
+		});
 	};
 
 	searchInput.addEventListener('input', e => filterPokemonList(e));
@@ -167,7 +158,6 @@ let pokemonRepository = (() => {
 
 	return {
 		getAll,
-		filterPokemon,
 		loadList,
 		loadDetails,
 		addListItem,

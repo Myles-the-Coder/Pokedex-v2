@@ -7,10 +7,6 @@ $box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 $white-background: whitesmoke;
 $black-background: #000;
 
-@mixin trackRadius() {
-  border-top-right-radius: 5px;
-	border-bottom-right-radius: 5px;
-}
 
 * {
 	box-sizing: border-box;
@@ -20,16 +16,12 @@ $black-background: #000;
 	width: 15px;
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-	background: $white-background;
-  @include trackRadius()
-}
-
-/* Handle */
+/* Track and Thumb */
+::-webkit-scrollbar-track,
 ::-webkit-scrollbar-thumb {
-	background: $black-background;
-	@include trackRadius()
+	background: $white-background;
+  border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 
 /* Handle on hover */
@@ -113,12 +105,12 @@ body {
 	inset: 0;
 
 	img {
-		width: 200px;
+		width: 250px;
 	}
 }
 
 .pokemon-container {
-	width: 75%;
+	width: 80%;
 	position: relative;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -135,7 +127,7 @@ body {
 
 /* Modal */
 .pokemon-info {
-	width: 70%;
+	width: 80%;
 	display: inline-block;
 	text-align: center;
 	font-size: 1.7rem;
@@ -203,12 +195,9 @@ body {
 	cursor: pointer;
 	transition: transform 0.2s ease;
 
-	&:hover {
-		transform: scale(1.1);
-	}
-
-	&:active {
-		transform: scale(1);
+	&:hover,
+  &:active {
+		transform: scale(1.05);
 	}
 
 	&:focus {
