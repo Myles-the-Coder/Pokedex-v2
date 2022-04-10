@@ -1,10 +1,15 @@
+'strict mode';
+const qs = document.querySelector.bind(document);
+const qsa = document.querySelectorAll.bind(document);
+const ce = document.createElement.bind(document);
+
 let pokemonRepository = (() => {
 	let pokemonList = [];
-	const pokemonContainer = document.querySelector('.pokemon-container');
-	const loadingIcon = document.querySelectorAll('.loading-icon');
-	const searchInput = document.querySelector('#search-input');
-	const modal = document.querySelector('#poke-modal');
-	const modalBody = document.querySelector('.modal-body');
+	const pokemonContainer = qs('.pokemon-container');
+	const loadingIcon = qsa('.loading-icon');
+	const searchInput = qs('#search-input');
+	const modal = qs('#poke-modal');
+	const modalBody = qs('.modal-body');
 	let pokeApi = 'https://pokeapi.co/api/v2/pokemon/?limit=151';
 	const colors = {
 		fire: '#FDDFDF',
@@ -30,14 +35,14 @@ let pokemonRepository = (() => {
 	const getAll = () => pokemonList;
 	const filterPokemon = name =>
 		pokemonList.filter(pokemon => pokemon.name === name);
-	const capitalize = word => word.toUpperCase().slice(0, 1) + word.slice(1);
+	const capitalize = s => s.toUpperCase().slice(0, 1) + s.slice(1);
 
-	function addListItem(pokemon) {
+	const addListItem = pokemon => {
 		let { name } = pokemon;
 		let capitalizedName = capitalize(name);
-		const listItem = document.createElement('li');
+		const listItem = ce('li');
 		listItem.classList.add('group-list-item');
-		const btn = document.createElement('button');
+		const btn = ce('button');
 		btn.classList.add('btn');
 		btn.innerText = `${capitalizedName}`;
 		btn.setAttribute('data-bs-toggle', 'modal');
@@ -49,18 +54,17 @@ let pokemonRepository = (() => {
 	}
 
 	//Display Pokemon Info in modal
-	function showDetails(pokemon) {
+	const showDetails = pokemon => {
 		loadDetails(pokemon).then(() => {
 			const { name, imageUrl, types } = pokemon;
-			const modalHeader = document.querySelector('.modal-header');
-			const modalTitle = document.querySelector('.modal-title');
-			const modalBody = document.querySelector('.modal-body');
-			const pokemonImg = document.createElement('img');
-			const pokemonInfo = document.createElement('p');
-			const pokemonName = document.createElement('h2');
-			const closeModalBtn = document.createElement('button');
-			const poke_types = types.map(type => type.type.name);
-      console.log(poke_types)
+			const modalHeader = qs('.modal-header');
+			const modalTitle = qs('.modal-title');
+			const modalBody = qs('.modal-body');
+			const pokemonImg = ce('img');
+			const pokemonInfo = ce('p');
+			const pokemonName = ce('h2');
+			const closeModalBtn = ce('button');
+			const poke_types = types.map(({ type }) => type.name);
 			const type = capitalize(
 				main_types.find(type => poke_types.indexOf(type) > -1)
 			);
@@ -89,22 +93,15 @@ let pokemonRepository = (() => {
 		});
 	}
 
-	function displayTypesAndHeight(pokemon, el) {
-		const pokemonInfoArray = [];
-    const {types} = pokemon
-		if (types.length === 2) {
-			types.forEach(type => {
-				pokemonInfoArray.push(capitalize(type.type.name));
-				el.innerText = `
-          Types: ${pokemonInfoArray} 
-          Height: ${pokemon.height}m
-          `;
-			});
-		} else {
-			el.innerText = `
-        Type: ${capitalize(types[0].type.name)} 
-        Height: ${pokemon.height}m`;
-		}
+	const displayTypesAndHeight = (pokemon, el) => {
+		const { types, height } = pokemon;
+		const infoArr = types.map(({ type }) => capitalize(type.name));
+		el.innerText = `
+      ${
+				types.length > 1 ? `Types: ${infoArr.join(',')}` : `Type: ${infoArr[0]}`
+			}
+      Height: ${height}m
+      `;
 	}
 
 	const hideLoadingIcon = () =>
@@ -116,42 +113,36 @@ let pokemonRepository = (() => {
 	};
 
 	//API functions
-	async function loadList() {
+	const loadList = async () => {
 		try {
 			const res = await fetch(pokeApi);
-			const data = await res.json();
-			console.log(data);
-			data.results.forEach(item => {
-        const {name, url} = item
-				let pokemon = {
-					name,
-					detailsUrl: url,
-				};
+			const { results } = await res.json();
+			results.forEach(({ name, url }) => {
+				let pokemon = { name, detailsUrl: url };
 				add(pokemon);
 			});
 		} catch (err) {
-			return handleError(err);
+			handleError(err);
 		}
 	}
 
-	async function loadDetails(item) {
+	const loadDetails = async item => {
 		let url = item.detailsUrl;
 		try {
 			const res = await fetch(url);
-			const data = await res.json();
-      const {sprites, height, types} = data
+			const { sprites, height, types } = await res.json();
 
 			item.imageUrl = sprites.front_default;
 			item.height = height;
 			item.types = types;
 		} catch (err) {
-			return handleError(err);
+			handleError(err);
 		}
 	}
 
 	const filterPokemonList = e => {
 		e.preventDefault();
-		let pokeList = document.querySelectorAll('.group-list-item');
+		let pokeList = qsAll('.group-list-item');
 		let searchTerm = searchInput.value.toLowerCase();
 		searchTerm !== ''
 			? pokeList.forEach(pokemon => {
