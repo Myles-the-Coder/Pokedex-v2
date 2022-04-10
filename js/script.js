@@ -33,18 +33,26 @@ let pokemonRepository = (() => {
 		typeof pokemon === 'object' && pokemonList.push(pokemon);
 
 	const getAll = () => pokemonList;
+<<<<<<< HEAD
 	const filterPokemon = name =>
 		pokemonList.filter(pokemon => pokemon.name === name);
 	const capitalize = s => s.toUpperCase().slice(0, 1) + s.slice(1);
+=======
+	const capitalize = word => word.toUpperCase().slice(0, 1) + word.slice(1);
+>>>>>>> 83ebec4fba02054dfa575e0ac2ebde9e7b9a656c
 
 	const addListItem = pokemon => {
 		let { name } = pokemon;
+<<<<<<< HEAD
 		let capitalizedName = capitalize(name);
 		const listItem = ce('li');
+=======
+		const listItem = document.createElement('li');
+>>>>>>> 83ebec4fba02054dfa575e0ac2ebde9e7b9a656c
 		listItem.classList.add('group-list-item');
 		const btn = ce('button');
 		btn.classList.add('btn');
-		btn.innerText = `${capitalizedName}`;
+		btn.innerText = `${capitalize(name)}`;
 		btn.setAttribute('data-bs-toggle', 'modal');
 		btn.setAttribute('data-bs-target', '#poke-modal');
 		listItem.appendChild(btn);
@@ -54,6 +62,7 @@ let pokemonRepository = (() => {
 	}
 
 	//Display Pokemon Info in modal
+<<<<<<< HEAD
 	const showDetails = pokemon => {
 		loadDetails(pokemon).then(() => {
 			const { name, imageUrl, types } = pokemon;
@@ -69,6 +78,21 @@ let pokemonRepository = (() => {
 				main_types.find(type => poke_types.indexOf(type) > -1)
 			);
 			const color = colors[type[0].toLowerCase() + type.slice(1)];
+=======
+	const showDetails = async (pokemon) => {
+		await loadDetails(pokemon).then(() => {
+			const { name, imageUrl, types } = pokemon;
+			const modalHeader = document.querySelector('.modal-header');
+			const modalTitle = document.querySelector('.modal-title');
+			const modalBody = document.querySelector('.modal-body');
+			const pokemonImg = document.createElement('img');
+			const pokemonInfo = document.createElement('p');
+			const pokemonName = document.createElement('h2');
+			const closeModalBtn = document.createElement('button');
+			const poke_types = types.map(type => type.type.name);
+			const type = main_types.find(type => poke_types.includes(type));
+			const color = colors[type];
+>>>>>>> 83ebec4fba02054dfa575e0ac2ebde9e7b9a656c
 
 			modalBody.style.backgroundColor = color;
 
@@ -77,7 +101,7 @@ let pokemonRepository = (() => {
 			closeModalBtn.innerText = 'X';
 			closeModalBtn.setAttribute('data-bs-dismiss', 'modal');
 
-			displayTypesAndHeight(pokemon, pokemonInfo);
+			displayPokemonInfo(pokemon, pokemonInfo);
 
 			pokemonName.classList.add('pokemon-name');
 			pokemonImg.classList.add('pokemon-sprite-lg');
@@ -93,6 +117,7 @@ let pokemonRepository = (() => {
 		});
 	}
 
+<<<<<<< HEAD
 	const displayTypesAndHeight = (pokemon, el) => {
 		const { types, height } = pokemon;
 		const infoArr = types.map(({ type }) => capitalize(type.name));
@@ -103,6 +128,22 @@ let pokemonRepository = (() => {
       Height: ${height}m
       `;
 	}
+=======
+	const displayPokemonInfo = (pokemon, el) => {
+		const { types, height, weight } = pokemon;
+		const typesArray = types.map(type => capitalize(type.type.name));
+		el.innerText =
+			types.length > 1
+				? `
+        Types: ${typesArray} 
+        Height: ${height}m
+        Weight: ${weight}
+        `
+				: `
+        Type: ${capitalize(types[0].type.name)} 
+        Height: ${height}m`;
+	};
+>>>>>>> 83ebec4fba02054dfa575e0ac2ebde9e7b9a656c
 
 	const hideLoadingIcon = () =>
 		loadingIcon.forEach(icon => icon.classList.add('hidden'));
@@ -117,8 +158,14 @@ let pokemonRepository = (() => {
 		try {
 			const res = await fetch(pokeApi);
 			const { results } = await res.json();
+<<<<<<< HEAD
 			results.forEach(({ name, url }) => {
 				let pokemon = { name, detailsUrl: url };
+=======
+			results.forEach(item => {
+				const { name, url } = item;
+				let pokemon = { name, url };
+>>>>>>> 83ebec4fba02054dfa575e0ac2ebde9e7b9a656c
 				add(pokemon);
 			});
 		} catch (err) {
@@ -126,15 +173,25 @@ let pokemonRepository = (() => {
 		}
 	}
 
+<<<<<<< HEAD
 	const loadDetails = async item => {
 		let url = item.detailsUrl;
 		try {
 			const res = await fetch(url);
 			const { sprites, height, types } = await res.json();
 
+=======
+	const loadDetails = async (item) => {
+		let url = item.url;
+		try {
+			const res = await fetch(url);
+			const data = await res.json();
+			const { sprites, height, weight, types } = data;
+>>>>>>> 83ebec4fba02054dfa575e0ac2ebde9e7b9a656c
 			item.imageUrl = sprites.front_default;
 			item.height = height;
 			item.types = types;
+			item.weight = weight;
 		} catch (err) {
 			handleError(err);
 		}
@@ -144,21 +201,21 @@ let pokemonRepository = (() => {
 		e.preventDefault();
 		let pokeList = qsAll('.group-list-item');
 		let searchTerm = searchInput.value.toLowerCase();
-		searchTerm !== ''
-			? pokeList.forEach(pokemon => {
-					pokemon.innerText.toLowerCase().indexOf(searchTerm) > -1
-						? pokemon.classList.remove('hidden')
-						: pokemon.classList.add('hidden');
-			  })
-			: pokeList.forEach(pokemon => pokemon.classList.remove('hidden'));
+		pokeList.forEach(pokemon => {
+			pokemon.innerText.toLowerCase().includes(searchTerm.toLowerCase())
+				? pokemon.classList.remove('hidden')
+				: pokemon.classList.add('hidden');
+		});
 	};
 
-	searchInput.addEventListener('input', e => filterPokemonList(e));
+	searchInput.addEventListener('keyup', e => {
+		clearTimeout(setTimeout(filterPokemonList(e), 500));
+	});
+
 	modal.addEventListener('hidden.bs.modal', () => (modalBody.innerHTML = ''));
 
 	return {
 		getAll,
-		filterPokemon,
 		loadList,
 		loadDetails,
 		addListItem,
